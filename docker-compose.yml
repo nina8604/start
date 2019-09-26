@@ -1,0 +1,73 @@
+version: '3.6'
+services:
+
+  node:
+    build: docker/nodejs
+    depends_on:
+      - app
+    volumes:
+      - "./:/www"
+
+  app:
+    build: docker/php-fpm
+    depends_on:
+     - db
+    volumes:
+     - "./:/www"
+    environment:
+      - "DOCKER_PHP_CONFIG=${DOCKER_PHP_CONFIG}"
+      - "DOCKER_XDEBUG=${DOCKER_XDEBUG}"
+      - "DOCKER_SUPERVISOR=${DOCKER_SUPERVISOR}"
+      - "DOCKER_CRON=${DOCKER_CRON}"
+
+  nginx:
+    image: nginx:1.16-alpine
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./:/www"
+      - "./docker/nginx/conf.d:/etc/nginx/conf.d"
+
+  db:
+    image: mysql/mysql-server:5.7
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - "database:/var/lib/mysql"
+    environment:
+      - "MYSQL_ROOT_HOST=%"
+      - "MYSQL_ROOT_PASSWORD=${DOCKER_PASSWORD}"
+      - "MYSQL_DATABASE=${DOCKER_DATABASE}"
+      - "MYSQL_USER=${DOCKER_USERNAME}"
+      - "MYSQL_PASSWORD=${DOCKER_PASSWORD}"
+    command: [
+      # "--general_log=1",
+      # "--general_log_file=/var/lib/mysql/general_log.log",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_general_ci",
+      "--default-storage-engine=innodb",
+      "--innodb-file-per-table",
+      "--explicit_defaults_for_timestamp=1",
+      "--default-time-zone=+00:00"
+    ]
+
+  beanstalkd:
+    image: schickling/beanstalkd:latest
+    ports:
+      - "11300:11300"
+    depends_on:
+      - app
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "8025:8025"
+    depends_on:
+      - app
+
+volumes:
+  database:
