@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Category $categories
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Category $categories)
+    public function index(Category $categories):View
     {
         return view('categories.index', [
             'categories'=> $categories->get(),
@@ -30,10 +30,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
      */
     public function store(Request $request)
     {
@@ -41,12 +38,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Category $category)
+    public function show(Category $category):View
     {
         return view('categories.show', [
             'category' => $category

@@ -11,7 +11,7 @@ down-volume: #  WARNING: stop and destroy containers with volumes
 	@docker-compose -f ${DOCKER_CONFIG} down -v
 
 start: # start already created containers
-	@docker-compose -f ${DOCKER_CONFIG} start
+	@sudo docker-compose -f ${DOCKER_CONFIG} start
 
 stop: # stop containers, but not destroy
 	@docker-compose -f ${DOCKER_CONFIG} stop
@@ -24,7 +24,7 @@ build: # build all dockerfile, if not built yet
 
 
 connect_app: # app command line
-	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app sh
+	@sudo docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app sh
 
 connect_node: # node command line
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel node sh
@@ -56,7 +56,7 @@ key: # gen application key
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app php artisan key:generate
 
 fresh: # refresh the database and run all database seeds
-    @docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app php artisan migrate:fresh --seed
+    @sudo docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app php artisan migrate:fresh --seed
 
 composer_dump: # composer dump-autoload
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app composer dump-autoload
