@@ -9,5 +9,6 @@ $factory->define(Picture::class, function (Faker $faker) {
     return [
         'path' => $faker->imageUrl(),
         'thumbnail' => $faker->imageUrl($width = 250, $height = 250),
+        'product_id' => $faker->numberBetween(1,135),
     ];
 });

@@ -18,8 +18,10 @@ class CreatePicturesTable extends Migration
 
             $table->string('path');
             $table->string('thumbnail');
+            $table->unsignedInteger('product_id');
 
             $table->timestamps();
+            $table->index('product_id');
         });
     }
 

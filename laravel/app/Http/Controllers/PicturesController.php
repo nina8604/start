@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 
-class PictureController extends Controller
+class PicturesController extends Controller
 {
     /**
      * Display a listing of the resource.

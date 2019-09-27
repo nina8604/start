@@ -43,6 +43,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category):View
     {
+        $category->load(['products.picture']);
         return view('categories.show', [
             'category' => $category
         ]);
