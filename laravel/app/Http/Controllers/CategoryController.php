@@ -8,6 +8,10 @@ use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     /**
      * @param Category $categories
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

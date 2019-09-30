@@ -37,7 +37,7 @@ connect_db: # database command line
 
 database-dump: # dump database
 	@docker-compose -f ${DOCKER_CONFIG} exec db mysqldump ${DOCKER_DATABASE} -u${DOCKER_USERNAME} -p${DOCKER_PASSWORD}
-	
+
 vendor: # composer install
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app composer install
 
