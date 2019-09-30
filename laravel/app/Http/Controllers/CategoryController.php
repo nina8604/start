@@ -18,7 +18,8 @@ class CategoryController extends Controller
      */
     public function index(Category $categories):View
     {
-        return view('categories.index', [
+        $view = auth() -> check() ? 'admin.categories.index' : 'categories.index';
+        return view($view, [
             'categories'=> $categories->get(),
         ]);
     }
@@ -30,7 +31,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -61,7 +62,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', [
+            'categories' => $category,
+        ]);
     }
 
     /**
