@@ -22,7 +22,6 @@ ps: # show started containers and their status
 build: # build all dockerfile, if not built yet
 	@docker-compose -f ${DOCKER_CONFIG} build
 
-
 connect_app: # app command line
 	@sudo docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app sh
 
@@ -38,8 +37,7 @@ connect_db: # database command line
 
 database-dump: # dump database
 	@docker-compose -f ${DOCKER_CONFIG} exec db mysqldump ${DOCKER_DATABASE} -u${DOCKER_USERNAME} -p${DOCKER_PASSWORD}
-
-
+	
 vendor: # composer install
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app composer install
 
