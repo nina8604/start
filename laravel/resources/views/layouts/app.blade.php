@@ -20,11 +20,17 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    @include('layouts.header')
 
-        <div id="app" class="container py-2">
-            @yield('content')
-        </div>
+    @if(Auth::check())
+        @include('layouts.admin')
+
+    @else
+        @include('layouts.header')
+    @endif
+
+    <div id="app" class="container py-2">
+        @yield('content')
+    </div>
 
 {{--        <main class="py-4">--}}
 {{--            @yield('content')--}}

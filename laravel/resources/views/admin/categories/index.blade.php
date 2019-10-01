@@ -8,18 +8,24 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-12">
+                <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-lg" >Create Category</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
 
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Slug</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Slug</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
                     @foreach($categories as $category)
                         <tr>
@@ -38,9 +44,10 @@
                         </tr>
                     @endforeach
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
+            </div>
         </div>
     </div>
 @endsection
