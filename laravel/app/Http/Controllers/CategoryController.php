@@ -14,20 +14,18 @@ class CategoryController extends Controller
 
     /**
      * @param Category $categories
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function index(Category $categories):View
     {
-        $view = auth() -> check() ? 'admin.categories.index' : 'categories.index';
-        return view($view, [
+//        $view = auth() -> check() ? 'admin.categories.index' : 'categories.index';
+        return view('categories.index', [
             'categories'=> $categories->get(),
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|View
      */
     public function create()
     {
@@ -44,7 +42,7 @@ class CategoryController extends Controller
 
     /**
      * @param Category $category
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return View
      */
     public function show(Category $category):View
     {
@@ -62,9 +60,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', [
-            'categories' => $category,
-        ]);
+//        return view('admin.categories.edit', [
+//            'categories' => $category,
+//        ]);
     }
 
     /**

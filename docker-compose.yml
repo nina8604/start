@@ -13,7 +13,7 @@ services:
     depends_on:
      - db
     volumes:
-     - "./:/www"
+     - "./exit:/www"
     environment:
       - "DOCKER_PHP_CONFIG=${DOCKER_PHP_CONFIG}"
       - "DOCKER_XDEBUG=${DOCKER_XDEBUG}"

@@ -17,8 +17,12 @@ Route::get('/', 'HomeController@index')->name('home');
 
 
 Route::resource('/products', 'ProductsController');
-Route::resource('/categories', 'CategoryController');
+Route::resource('/categories', 'CategoryController')->only(['index', 'show']);
 Route::resource('/pictures', 'PicturesController');
 
 Auth::routes();
+
+Route::prefix('admin')->middleware('auth')->name('admin.')->namespace('Admin')->group(function(){
+    Route::resource('/categories', 'CategoryController');
+});
 

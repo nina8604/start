@@ -23,7 +23,7 @@ build: # build all dockerfile, if not built yet
 	@docker-compose -f ${DOCKER_CONFIG} build
 
 connect_app: # app command line
-	@sudo docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app sh
+	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app sh
 
 connect_node: # node command line
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel node sh
@@ -48,7 +48,7 @@ watch: # npm run watch
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel node npm run watch
 
 routes: # routes list
-	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app php artisan routes:list
+	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app php artisan route:list
 
 key: # gen application key
 	@docker-compose -f ${DOCKER_CONFIG} exec -u www -w /www/laravel app php artisan key:generate
