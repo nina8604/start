@@ -29,6 +29,11 @@
                             <td>{{ $category -> description }}</td>
                             <td>
                                 <a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}" class="btn" >Edit</a>
+                                <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="POST">
+                                    @method("DELETE")
+                                    @csrf
+                                    <button>Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
