@@ -28,7 +28,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -37,9 +37,11 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Category $category)
     {
-        //
+        $category->create($request->all());
+        return redirect()->route('admin.categories.index');
+
     }
 
     /**
@@ -65,23 +67,20 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Category $category
+     * @param Request $request
+     * @param Category $category
      * @return View
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category):View
     {
         $category->update($request->all());
         return $this->edit($category);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
