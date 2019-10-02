@@ -6,6 +6,7 @@ use App\Models\Product;
 
 class CategoriesTableSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *

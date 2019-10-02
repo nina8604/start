@@ -10,6 +10,6 @@ $factory->define(Category::class, function (Faker $faker) {
         'name' => join(' ', $faker->words(5)),
         'slug' => Str::slug(join(' ', $faker->words(5))),
         'description' => $faker->text(200),
-        'path' =>$faker->imageUrl(),
+        'file_name' =>$faker->imageUrl(),
     ];
 });

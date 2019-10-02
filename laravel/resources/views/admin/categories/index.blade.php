@@ -12,6 +12,7 @@
                 <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-lg" >Create Category</a>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-12">
 
@@ -19,6 +20,7 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Picture</th>
                         <th scope="col">Name</th>
                         <th scope="col">Slug</th>
                         <th scope="col">Description</th>
@@ -30,6 +32,7 @@
                     @foreach($categories as $category)
                         <tr>
                             <th scope="row">{{ $loop -> index + 1 }}</th>
+                            <td><img src="{{ $category->assetToAbsolute($category->file_name) }}" class="card-img-top" alt="..."></td>
                             <td>{{ $category -> name }}</td>
                             <td>{{ $category -> slug }}</td>
                             <td>{{ $category -> description }}</td>

@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->text('description');
-            $table->string('path')->default('');
+            $table->string('file_name')->default('');
 
             $table->timestamps();
         });

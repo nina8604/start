@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Admin\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Picture;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,10 @@ class PicturesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->has('file')){
+            $file = $request->file('file');
+            $file->storeAs( 'public/images', $file->getClientOriginName() );
+        }
     }
 
     /**

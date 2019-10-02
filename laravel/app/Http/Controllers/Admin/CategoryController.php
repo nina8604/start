@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\View\View;
+use Illuminate\Http\UploadedFile;
 
 class CategoryController extends Controller
 {
@@ -36,7 +37,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request, Category $category)
     {
-        $category->create($request->all());
+        if($request->has('file')){
+            $file = $request->file('file');
+            $ext = $file->extension();
+            $fileName = uniqid(time(), true).".{$ext}";
+            if($file->storeAs( Category::PICTURE_PATH, $fileName, ['disk' => 'public'])) {
+                $category->create(array_merge($request->all(), [
+                    'file_name' => $fileName,
+                ]));
+            }
+        }
         return redirect()->route('admin.categories.index');
 
     }
