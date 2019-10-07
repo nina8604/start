@@ -47,7 +47,7 @@ class CategoryController extends Controller
      */
     public function create():View
     {
-        return view('admin.categories.create');
+        return view('admin.categories.create', ['category' => new Category()]);
     }
 
     /**
@@ -100,7 +100,7 @@ class CategoryController extends Controller
     {
 //        return view('admin.categories.edit', [
         return view('admin.categories.create', [
-            'categories' => $category,
+            'category' => $category,
         ]);
     }
 
