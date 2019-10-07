@@ -5,6 +5,7 @@ namespace App\Http\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Picture;
 use Illuminate\Http\Request;
+use App\Http\Requests\PictureRequest;
 
 class PicturesController extends Controller
 {
@@ -34,12 +35,12 @@ class PicturesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PictureRequest $request)
     {
-        if($request->has('file')){
-            $file = $request->file('file');
-            $file->storeAs( 'public/images', $file->getClientOriginName() );
-        }
+        $file = $request->file('file');
+        $ext = $file->extension();
+        $fileName = uniqid(time(), true).".{$ext}";
+        $file->storeAs( 'public/images', $fileName );
     }
 
     /**

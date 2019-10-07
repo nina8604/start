@@ -2,14 +2,34 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\CategoryDto;
 use App\Http\Controllers\Controller;
+use App\Services\CategoryService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\View\View;
 use Illuminate\Http\UploadedFile;
+use App\Http\Requests\CategoryRequest;
+use App\Services\PictureService;
 
 class CategoryController extends Controller
 {
+    /**
+     * @var CategoryService
+     */
+    protected $service;
+
+    /**
+     * CategoryController constructor.
+     *
+     * @param CategoryService $service
+     */
+    public function __construct(CategoryService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * @param Request $request
      * @param Category $categories
@@ -31,24 +51,34 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Category $category
-     * @return \Illuminate\Http\RedirectResponse
+     * @param CategoryRequest $request
+     * @return RedirectResponse
+     * @throws \Exception
      */
-    public function store(Request $request, Category $category)
+    public function store(CategoryRequest $request)
     {
-        if($request->has('file')){
-            $file = $request->file('file');
-            $ext = $file->extension();
-            $fileName = uniqid(time(), true).".{$ext}";
-            if($file->storeAs( Category::PICTURE_PATH, $fileName, ['disk' => 'public'])) {
-                $category->create(array_merge($request->all(), [
-                    'file_name' => $fileName,
-                ]));
-            }
-        }
+        $categoryDto = CategoryDto::createFromArray(array_merge($request->all(), [
+            'file' => $request->file('file'),
+        ]));
+
+        $this->service->createCategory($categoryDto);
+
         return redirect()->route('admin.categories.index');
 
+////        if($request->has('file')){
+////            $file = $request->file('file');
+////            $ext = $file->extension();
+////            $fileName = uniqid(time(), true).".{$ext}";
+//        $picture = new PictureService();
+//        $file = $picture->getFile($request);
+//            if($file->storeAs( Category::PICTURE_PATH, $picture->createFileName($file), ['disk' => 'public'])) {
+////            if($file->storeAs( Category::PICTURE_PATH, $fileName, ['disk' => 'public'])) {
+//                $category->create(array_merge($request->all(), [
+//                    'file_name' => $picture->createFileName($file),
+////                    'file_name' => $fileName,
+//                ]));
+//            }
+////        }
     }
 
     /**
@@ -68,20 +98,27 @@ class CategoryController extends Controller
      */
     public function edit(Category $category):View
     {
-        return view('admin.categories.edit', [
+//        return view('admin.categories.edit', [
+        return view('admin.categories.create', [
             'categories' => $category,
         ]);
     }
 
     /**
-     * @param Request $request
+     * @param CategoryRequest $request
      * @param Category $category
-     * @return View
+     * @return RedirectResponse
+     * @throws \Exception
      */
-    public function update(Request $request, Category $category):View
+    public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->all());
-        return $this->edit($category);
+        $categoryDto = CategoryDto::createFromArray(array_merge($request->all(), [
+            'file' => $request->file('file'),
+        ]));
+
+        $this->service->updateCategory($category, $categoryDto);
+
+        return redirect()->route('admin.categories.index');
     }
 
     /**

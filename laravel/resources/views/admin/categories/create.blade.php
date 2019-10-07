@@ -5,42 +5,56 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('admin.categories.store') }}" method="post" enctype = 'multipart/form-data' >
+                <form method="POST"
+                      @if($categories->id)
+                        action="{{ route('admin.categories.update', ['category' => $categories->id]) }}"
+                      @else
+                        action="{{ route('admin.categories.store') }}"
+                      @endif
+                      enctype = 'multipart/form-data' >
 
                     @csrf
-                    <div class="form-group">
+                    @if($categories->id)
+                        @method('PUT')
+                    @endif
+
+                    <div class="form-group @if($errors->has('file')) has-error @endif">
                         <label for="exampleFormControlFile1">Choose File</label>
                         <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+                        @if($errors->has('file'))
+                            <div class="help-block">{{ $errors->first('file') }}</div>
+                        @endif
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row @if($errors->has('name')) has-error @endif">
                         <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                            <input type="name" class="form-control" name="name" id="inputName" >
+                            <input type="text" class="form-control" name="name" id="inputName" value="{{ old('name') ? old('name') : $categories->name }}" >
+                            @if($errors->has('name'))
+                                <div class="help-block">{{ $errors->first('name') }}</div>
+                            @endif
                         </div>
+
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row @if($errors->has('slug')) has-error @endif">
                         <label for="inputSlug" class="col-sm-2 col-form-label">Slug</label>
                         <div class="col-sm-10">
-                            <input type="slug" class="form-control" name="slug" id="inputSlug" >
+                            <input type="text" class="form-control" name="slug" id="inputSlug" value="{{ old('slug') ? old('slug') : $categories->slug }}" >
+                            @if($errors->has('slug'))
+                                <div class="help-block">{{ $errors->first('slug') }}</div>
+                            @endif
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group @if($errors->has('description')) has-error @endif">
                         <label for="TextareaDescription">Description</label>
-                        <textarea class="form-control" id="TextareaDescription" name="description" rows="3"></textarea>
+                        <textarea class="form-control" id="TextareaDescription" name="description" rows="3">{{ old('description') ? old('description') : $categories->description }}</textarea>
+                        @if($errors->has('description'))
+                            <div class="help-block">{{ $errors->first('description') }}</div>
+                        @endif
                     </div>
-{{--                    <div class="input-group">--}}
-{{--                        <div class="custom-file">--}}
-{{--                            <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">--}}
-{{--                            <label class="custom-file-label" for="inputGroupFile04">Choose file</label>--}}
-{{--                        </div>--}}
-{{--                        <div class="input-group-append">--}}
-{{--                            <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     <br>
                     <div class="form-group row">
                         <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </form>

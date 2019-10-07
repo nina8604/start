@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
  * Class Category
  * @package App\Models
  *
+ * @property string $file_name
  * @property Product[]|Collection $products
  */
 class Category extends Model
