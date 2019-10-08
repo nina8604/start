@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
@@ -18,7 +19,9 @@ class CategoryRequest extends FormRequest
             'slug' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'file' => [
-                'required',
+                Rule::requiredIf(function() {
+                    return $this->routeIs('admin.categories.store');
+                }),
                 'image',
                 //'mimes:jpeg,bmp,png,jpg',
                 'max:50000',
