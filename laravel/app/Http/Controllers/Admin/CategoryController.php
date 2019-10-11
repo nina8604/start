@@ -64,21 +64,6 @@ class CategoryController extends Controller
         $this->service->createCategory($categoryDto);
 
         return redirect()->route('admin.categories.index');
-
-////        if($request->has('file')){
-////            $file = $request->file('file');
-////            $ext = $file->extension();
-////            $fileName = uniqid(time(), true).".{$ext}";
-//        $picture = new PictureService();
-//        $file = $picture->getFile($request);
-//            if($file->storeAs( Category::PICTURE_PATH, $picture->createFileName($file), ['disk' => 'public'])) {
-////            if($file->storeAs( Category::PICTURE_PATH, $fileName, ['disk' => 'public'])) {
-//                $category->create(array_merge($request->all(), [
-//                    'file_name' => $picture->createFileName($file),
-////                    'file_name' => $fileName,
-//                ]));
-//            }
-////        }
     }
 
     /**
@@ -98,7 +83,6 @@ class CategoryController extends Controller
      */
     public function edit(Category $category):View
     {
-//        return view('admin.categories.edit', [
         return view('admin.categories.create', [
             'category' => $category,
         ]);

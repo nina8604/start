@@ -67,24 +67,24 @@
 
 @section('scripts')
     <script>
+        function preloadPicture(evt, containerId){
+            let file = evt.target.files;
+            let pictureFile = file[0];
+            let reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+                    $('#' + containerId).find('img').remove();
+                    $('#' + containerId).html(['<img class="thumb" src="', e.target.result,
+                        '" title="', escape(theFile.name), '" />'].join(''));
+                };
+            })(pictureFile);
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(pictureFile);
+        }
         $(document).ready(function() {
-            $('#categoryFile').on('change',function(evt){
-                console.log('hkfgkfj');
-                // let file = $('#categoryFile');
-                let file = evt.target.files;
-                console.log('123', file);
-                let pictureFile = file[0];
-                let reader = new FileReader();
-                // Closure to capture the file information.
-                reader.onload = (function(theFile) {
-                    return function(e) {
-                        $('#showFile').find('img').remove();
-                        $('#showFile').html(['<img class="thumb" src="', e.target.result,
-                            '" title="', escape(theFile.name), '" />'].join(''));
-                    };
-                })(pictureFile);
-                // Read in the image file as a data URL.
-                reader.readAsDataURL(pictureFile);
+            $('#categoryFile').on("change", function(evt){
+                preloadPicture(evt, 'showFile');
             });
         });
 

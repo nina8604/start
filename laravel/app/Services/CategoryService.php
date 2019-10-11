@@ -56,4 +56,5 @@ class CategoryService
         $pictureService = new PictureService($uploadedFile);
         return $pictureService->storeToFolder(Category::PICTURE_PATH);
     }
+
 }
