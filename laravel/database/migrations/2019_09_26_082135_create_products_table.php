@@ -22,11 +22,12 @@ class CreateProductsTable extends Migration
             $table->mediumText('description')->nullable();
 
             $table->float('price', 7,2);
-            $table->unsignedInteger('category_id');
+            $table->unsignedBigInteger('category_id')->index();
 
             $table->timestamps();
 
-            $table->index('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+
         });
     }
 

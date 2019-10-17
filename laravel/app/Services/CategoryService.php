@@ -9,25 +9,6 @@ use Illuminate\Http\UploadedFile;
 class CategoryService
 {
     /**
-     * @param CategoryDto $categoryDto
-     * @return Category
-     * @throws \Exception
-     */
-    public function createCategory(CategoryDto $categoryDto) : Category {
-        return $this->saveCategory(new Category(), $categoryDto);
-    }
-
-    /**
-     * @param Category $category
-     * @param CategoryDto $categoryDto
-     * @return Category
-     * @throws \Exception
-     */
-    public function updateCategory(Category $category, CategoryDto $categoryDto) : Category {
-        return $this->saveCategory($category, $categoryDto);
-    }
-
-    /**
      * @param Category $category
      * @param CategoryDto $categoryDto
      * @return Category
@@ -56,5 +37,28 @@ class CategoryService
         $pictureService = new PictureService($uploadedFile);
         return $pictureService->storeToFolder(Category::PICTURE_PATH);
     }
+
+    /**
+     * @param CategoryDto $categoryDto
+     * @return Category
+     * @throws \Exception
+     */
+    public function createCategory(CategoryDto $categoryDto) : Category {
+        return $this->saveCategory(new Category(), $categoryDto);
+    }
+
+    /**
+     * @param Category $category
+     * @param CategoryDto $categoryDto
+     * @return Category
+     * @throws \Exception
+     */
+    public function updateCategory(Category $category, CategoryDto $categoryDto) : Category {
+        return $this->saveCategory($category, $categoryDto);
+    }
+
+
+
+
 
 }

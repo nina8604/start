@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class PictureService {
     /**
@@ -42,5 +43,7 @@ class PictureService {
         $fileName = uniqid(time(), true).".{$extension}";
         return $fileName;
     }
+
+
 }
 

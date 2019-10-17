@@ -33,11 +33,11 @@
 
                     <div class="col-sm-6form-group row">
                         <div class="col-sm-4">
-                            @isset($category->file_name)
-                                <div class="card card-body bg-light" id="showFile">
+                            <div id="showFile" class="card card-body bg-light">
+                                @isset($category->file_name)
                                     <img src="{{ $category->assetToAbsolute($category->file_name) }}" alt="" class="img-fluid">
-                                </div>
-                            @endisset
+                                @endisset
+                            </div>
                         </div>
                     </div>
                     <br>

@@ -26,3 +26,27 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+let isOpen = false;
+let $dropDownToggle = $('.nav-link.dropdown-toggle');
+let $dropDownMenu = $('.dropdown-menu');
+$dropDownToggle.on('click', function () {
+    $dropDownMenu.css('display', (isOpen ? 'none' : 'block'));
+    isOpen = !isOpen;
+});
+
+function preloadPicture(evt, containerId){
+    let file = evt.target.files;
+    let pictureFile = file[0];
+    let reader = new FileReader();
+    // Closure to capture the file information.
+    reader.onload = (function(theFile) {
+        return function(e) {
+            $('#' + containerId).find('img').remove();
+            $('#' + containerId).html(['<img class="thumb" src="', e.target.result,
+                '" title="', escape(theFile.name), '" />'].join(''));
+        };
+    })(pictureFile);
+    // Read in the image file as a data URL.
+    reader.readAsDataURL(pictureFile);
+}

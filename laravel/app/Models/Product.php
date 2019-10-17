@@ -15,6 +15,10 @@ use Illuminate\Support\Collection;
  */
 class Product extends Model
 {
+    const PICTURE_PATH = 'products';
+
+    protected $guarded = ['id'];
+
     public function category() {
         return $this->belongsTo(Category::class, 'category_id', 'id');
     }
@@ -25,4 +29,6 @@ class Product extends Model
     public function picture() {
         return $this->hasOne(Picture::class,'product_id','id');
     }
+
+
 }

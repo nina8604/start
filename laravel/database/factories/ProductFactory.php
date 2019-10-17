@@ -2,8 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Models\Category;
 use App\Models\Product;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(Product::class, function (Faker $faker) {
     static $index = 0;
@@ -13,6 +15,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'slug' => Str::slug(join(' ', $faker->words(5))),
         'description' => $faker->text(200),
         'price' => $faker->randomFloat(2,0,1000),
-        'category_id' => $faker->numberBetween(10,25),
+        'category_id' => Category::inRandomOrder()->first()->id,
     ];
 });

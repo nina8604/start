@@ -23,7 +23,6 @@ class CategoryRequest extends FormRequest
                     return $this->routeIs('admin.categories.store');
                 }),
                 'image',
-                //'mimes:jpeg,bmp,png,jpg',
                 'max:50000',
             ],
         ];
@@ -33,10 +32,9 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name.required' => 'Необходимо указать заголовок!',
-//            'slug' => 'Необходимо указать алиас!',
+            'slug.required' => 'Необходимо указать псевдоним!',
             'description.required' => 'Необходимо заполнить описание!',
             'file.required' => 'Необходимо выбрать изображение',
-            'file.mimes' => 'Допустимые форматы загрузки излбражения: jpeg, bmp, png!',
             'file.max' => 'Допустимый размер файла 5мб !',
         ];
     }

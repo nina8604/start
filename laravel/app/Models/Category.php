@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\AssetFilePath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use App\Traits\PictureTrait;
 
 /**
  * Class Category
@@ -16,6 +17,7 @@ use Illuminate\Support\Collection;
 class Category extends Model
 {
     use AssetFilePath;
+    use PictureTrait;
 
     const PICTURE_PATH = 'images';
 
@@ -37,5 +39,16 @@ class Category extends Model
     public function getFolderPath(): string
     {
         return self::PICTURE_PATH;
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($category) {
+
+            $dir = $category->getFolderPath();
+            $category->deletePictureFromFolder($category->file_name, $dir);
+        });
     }
 }
