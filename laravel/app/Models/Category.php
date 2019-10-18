@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Helpers\AssetFilePath;
+use App\Helpers\IModelFileManager;
+use App\Helpers\ModelFileManagerTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use App\Traits\PictureTrait;
@@ -14,10 +16,12 @@ use App\Traits\PictureTrait;
  * @property string $file_name
  * @property Product[]|Collection $products
  */
-class Category extends Model
+class Category extends Model implements IModelFileManager
 {
-    use AssetFilePath;
-    use PictureTrait;
+//    use AssetFilePath;
+//    use PictureTrait;
+
+    use ModelFileManagerTrait;
 
     const PICTURE_PATH = 'images';
 
@@ -41,14 +45,19 @@ class Category extends Model
         return self::PICTURE_PATH;
     }
 
-    protected static function boot()
+    public function getFileName(): string
     {
-        parent::boot();
-
-        static::deleting(function ($category) {
-
-            $dir = $category->getFolderPath();
-            $category->deletePictureFromFolder($category->file_name, $dir);
-        });
+        return $this->file_name;
     }
+
+//    protected static function boot()
+//    {
+//        parent::boot();
+//
+//        static::deleting(function ($category) {
+//
+//            $dir = $category->getFolderPath();
+//            $category->deletePictureFromFolder($category->file_name, $dir);
+//        });
+//    }
 }

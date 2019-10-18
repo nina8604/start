@@ -3,10 +3,15 @@
 namespace App\Services;
 
 use App\DTO\ProductDto;
+use App\Helpers\PromiseActionsTrait;
+use App\Models\Picture;
 use App\Models\Product;
+use Illuminate\Http\UploadedFile;
 
 class ProductItemService
 {
+    use PromiseActionsTrait;
+
     /**
      * @var Product
      */
@@ -39,23 +44,23 @@ class ProductItemService
     }
 
     /**
-     * @param string $fileName
-     * @return $this
+     * @param UploadedFile[]|array $gallery
+     * @return void
+     * @throws \Exception
      */
-    public function changeImage(string $fileName) : self {
-        $this->product->picture->path = $fileName;
-        return $this;
-    }
+    public function addImages(array $gallery) {
+        $this->recordPromiseAction(function() use($gallery) {
+            foreach($gallery as $uploadedImage) {
+                $newPicture = new Picture();
+                $pictureService = new PictureService($uploadedImage);
+                $newPicture->path = $pictureService->storeToFolder($newPicture->getFolderPath());
 
-    /**
-     * @param $gallery
-     * @return $this
-     */
-    public function changeImages($gallery) :self {
-        foreach($gallery as $picture) {
-            $this->changeImage($picture);
-        }
-        return $this;
+                // $newPicture->product_id = $this->product->id;
+                // $newPicture->save();
+
+                $this->product->pictures()->save($newPicture);
+            }
+        });
     }
 
     /**
@@ -63,6 +68,9 @@ class ProductItemService
      */
     public function commitChanges() : self {
         $this->product->save();
+
+        $this->releasePromiseActions();
+
         return $this;
     }
 }

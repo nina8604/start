@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\IModelFileManager;
+use App\Helpers\ModelFileManagerTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -13,9 +15,11 @@ use Illuminate\Support\Collection;
  * @property Picture[]|Collection $pictures
  * @property Picture $picture
  */
-class Product extends Model
+class Product extends Model implements IModelFileManager
 {
-    const PICTURE_PATH = 'products';
+//    const PICTURE_PATH = 'products';
+
+    use ModelFileManagerTrait;
 
     protected $guarded = ['id'];
 
@@ -28,6 +32,16 @@ class Product extends Model
 
     public function picture() {
         return $this->hasOne(Picture::class,'product_id','id');
+    }
+
+    public function getFolderPath(): string
+    {
+        return Picture::PICTURE_PATH;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->picture->path;
     }
 
 

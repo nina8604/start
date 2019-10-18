@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\CategoryDto;
 use App\Http\Controllers\Controller;
+use App\Observers\CategoryObserver;
+use App\Observers\DeletingFileObserver;
 use App\Services\CategoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

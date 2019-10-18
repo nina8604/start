@@ -15,41 +15,17 @@ class ProductService
      * @throws \Exception
      */
     protected function saveProduct(Product $product, ProductDto $productDto) : Product {
+        $productItemService = new ProductItemService($product);
 
-        $gallery = $product->pictures;
-        if($productDto->hasFiles()) {
-            $gallery = $this->saveProductImages($productDto->gallery);
+        if($productDto->hasNewFiles()) {
+            $productItemService->addImages($productDto->gallery);
         }
 
-        $productItemService = new ProductItemService($product);
         $productItemService
             ->changeAttributes($productDto)
-            ->changeImages($gallery)
             ->commitChanges();
 
         return $productItemService->getProduct();
-    }
-
-    /**
-     * @param array $gallery
-     * @return $this
-     * @throws \Exception
-     */
-    protected function saveProductImages(array $gallery) {
-        foreach($gallery as $picture) {
-            $this->saveProductImage($picture);
-        }
-        return $this;
-    }
-
-    /**
-     * @param UploadedFile $uploadedFile
-     * @return string
-     * @throws \Exception
-     */
-    protected function saveProductImage(UploadedFile $uploadedFile) : string {
-        $pictureService = new PictureService($uploadedFile);
-        return $pictureService->storeToFolder(Product::PICTURE_PATH);
     }
 
     /**

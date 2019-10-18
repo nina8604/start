@@ -37,7 +37,7 @@ class ProductDto
     public $category_id;
 
     /**
-     * @var array
+     * @var UploadedFile[]|array
      */
     public $gallery;
 
@@ -50,7 +50,7 @@ class ProductDto
      * @param string $description
      * @param int $price
      * @param int $category_id
-     * @param array $gallery
+     * @param UploadedFile[]|array $gallery
      */
     public function __construct(int $sku,
                                 string $name,
@@ -72,8 +72,8 @@ class ProductDto
     /**
      * @return bool
      */
-    public function hasFiles() : bool {
-        return !empty($this->galerry);
+    public function hasNewFiles() : bool {
+        return !empty($this->gallery);
     }
 
     /**
@@ -101,7 +101,8 @@ class ProductDto
             Arr::get($attributes, 'slug', ''),
             Arr::get($attributes, 'description', ''),
             Arr::get($attributes, 'price', ''),
-            Arr::get($attributes, 'category_id', '')
+            Arr::get($attributes, 'category_id', ''),
+            Arr::wrap(Arr::get($attributes, 'gallery', []))
         );
     }
 }

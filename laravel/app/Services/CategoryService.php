@@ -56,9 +56,4 @@ class CategoryService
     public function updateCategory(Category $category, CategoryDto $categoryDto) : Category {
         return $this->saveCategory($category, $categoryDto);
     }
-
-
-
-
-
 }
