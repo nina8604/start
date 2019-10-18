@@ -88,11 +88,10 @@
                                 @foreach($product->pictures as $picture)
                                     <div class="col-sm-4">
                                         <div class="card card-body bg-light">
-{{--                                <span class="admin-image-delete" @click="destroy">--}}
-{{--                                    <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" data-id="{{ $picture->id }}"></i>--}}
-{{--                                </span>--}}
-{{--                                            <img src="{{ asset('storage/images/action/' . $picture->path) }}" alt="" class="img-fluid">--}}
-                                            <img src="{{ $picture->path }}" alt="" class="img-fluid">
+                                            <span class="admin-image-delete">
+                                                <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" data-id="{{ $picture->id }}"></i>
+                                            </span>
+                                            <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid">
                                         </div>
                                     </div>
                                 @endforeach
@@ -117,11 +116,15 @@
 @section('scripts')
     <script>
 
-        // $(document).ready(function() {
-        //     $('#categoryFile').on("change", function(evt){
-        //         preloadPicture(evt, 'showFile');
-        //     });
-        // });
+        $(document).ready(function() {
+            $('#{{$product->id}}').on("click", function(){
+                let input = document.createElement('INPUT');
+                input.name = "picture_id[]";
+                input.type = 'hidden';
+                input.value = this.id;
+                $('form').appendChild(input);
+            });
+        });
 
     </script>
 @endsection
