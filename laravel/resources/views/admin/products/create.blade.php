@@ -83,15 +83,26 @@
 
                     <br>
                     <div class="row">
-                        <div class="col-sm-4 d-flex flex-wrap">
+                        <div class="col-12 d-flex flex-wrap">
                             @if($product->id and count($product->pictures))
                                 @foreach($product->pictures as $picture)
-                                    <div class="col-sm-4">
-                                        <div class="card card-body bg-light">
-                                            <span class="admin-image-delete">
-                                                <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>
-                                            </span>
-                                            <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid">
+                                    <div  class="col-sm-4">
+{{--                                        <div class="card card-body bg-light" style="display: block;">--}}
+                                        <div class="card card-body bg-light" style="opacity: 1;">
+                                            <div class="icons-flex" style="display: flex;">
+                                                <span class="admin-image-delete" style="margin-right: 10px;">
+                                                    <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>
+                                                </span>
+                                                <span class="admin-image-restore">
+                                                    <i class="fa fa-window-restore restore-action-photo" aria-hidden="true" data-id="{{ $picture->id }}"></i>
+                                                </span>
+
+                                            </div>
+{{--                                            <span class="admin-image-delete" style="display: inline-block;">--}}
+{{--                                                <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>--}}
+{{--                                            </span>--}}
+                                            <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid" >
+{{--                                            <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-thumbnail">--}}
                                         </div>
                                     </div>
                                 @endforeach
@@ -113,17 +124,54 @@
 @section('scripts')
     <script>
 
+        function preloadPicture(evt, containerId){
+            let file = evt.target.files;
+            let pictureFile = file[0];
+
+            let reader = new FileReader();
+            // Closure to capture the file information.
+            reader.onload = (function(theFile) {
+                return function(e) {
+
+                    $('#' + containerId).html(['<img class="thumb" src="', e.target.result,
+                        '" title="', escape(theFile.name), '" />'].join(''));
+                };
+            })(pictureFile);
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(pictureFile);
+        }
+        // $(document).ready(function() {
+        //     $('#categoryFile').on("change", function(evt){
+        //         preloadPicture(evt, 'showFile');
+        //     });
+        // });
+
         $(document).ready(function() {
-            $('.admin-image-delete i').on("click", function(){
+            $('.admin-image-delete i').on("click", function() {
                 let inp = $(`form input[data-id=${ $(this).attr('id') }]`);
                 if ( inp.length >= 1  ) return;
+                // console.log()
+                // $(this).parent().parent().attr('style', 'display: none;');
+
                 let input = document.createElement('INPUT');
+                // $(this).parent().parent().attr('style', 'opacity: 0.4;');
+
+                $(this).parent().parent().next().attr('style', 'opacity: 0.4;');
+                $(this).attr('style', 'opacity: 0.4;');
+                // $(this).parent().parent().prepend('<span class="admin-image-restore" style="display: inline-block;"><i class="fa fa-window-restore restore-action-photo" aria-hidden="true"></i></span>');
                 $(input).attr('data-id', $(this).attr('id'));
                 input.name = "pictures_id[]";
                 input.type = 'hidden';
                 input.value = $(this).attr('id');
                 $('form').append(input);
             });
+            $('.admin-image-restore i').on("click", function() {
+
+                $(this).parent().parent().next().attr('style', 'opacity: 1;');
+                $('.admin-image-delete i').attr('style', 'opacity: 1;');
+                // console.log($(`form input[data-id=${ $(this).attr('data-id') }]`));
+                $(`form input[data-id=${ $(this).attr('data-id') }]`).remove();
+            })
         });
 
     </script>

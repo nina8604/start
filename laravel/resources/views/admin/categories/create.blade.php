@@ -31,7 +31,7 @@
                         <input type="file" name="file" class="form-control-file" id="categoryFile" @if(!isset($category->file_name))  @endif/>
                     @endcomponent
 
-                    <div class="col-sm-6form-group row">
+                    <div class="col-sm-6 form-group row">
                         <div class="col-sm-4">
                             <div id="showFile" class="card card-body bg-light">
                                 @isset($category->file_name)
@@ -67,9 +67,10 @@
 
 @section('scripts')
     <script>
-        function preloadPicture(evt, containerId){
+        function preloadPictures(evt, containerId){
             let file = evt.target.files;
             let pictureFile = file[0];
+
             let reader = new FileReader();
             // Closure to capture the file information.
             reader.onload = (function(theFile) {
