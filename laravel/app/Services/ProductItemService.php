@@ -7,6 +7,7 @@ use App\Helpers\PromiseActionsTrait;
 use App\Models\Picture;
 use App\Models\Product;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 
 class ProductItemService
 {
@@ -60,6 +61,23 @@ class ProductItemService
 
                 $this->product->pictures()->save($newPicture);
             }
+        });
+    }
+
+    /**
+     * @param array $picturesIdToDelete
+     */
+    public function deleteImages(array $picturesIdToDelete) {
+        $this->recordPromiseAction(function() use($picturesIdToDelete) {
+            /* @var Collection|Picture[] $deletingPictures */
+            $deletingPictures = $this->product->pictures()
+                ->whereIn('id', $picturesIdToDelete)
+                ->get();
+
+            $deletingPictures->each(function($picture) {
+                /* @var Picture $picture */
+                $picture->delete();
+            });
         });
     }
 

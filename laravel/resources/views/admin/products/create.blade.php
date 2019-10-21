@@ -89,7 +89,7 @@
                                     <div class="col-sm-4">
                                         <div class="card card-body bg-light">
                                             <span class="admin-image-delete">
-                                                <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" data-id="{{ $picture->id }}"></i>
+                                                <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>
                                             </span>
                                             <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid">
                                         </div>
@@ -98,9 +98,6 @@
                             @endif
                         </div>
                     </div>
-
-
-
                     <br>
                     <div class="form-group row">
                         <div class="col-sm-10">
@@ -117,12 +114,15 @@
     <script>
 
         $(document).ready(function() {
-            $('#{{$product->id}}').on("click", function(){
+            $('.admin-image-delete i').on("click", function(){
+                let inp = $(`form input[data-id=${ $(this).attr('id') }]`);
+                if ( inp.length >= 1  ) return;
                 let input = document.createElement('INPUT');
-                input.name = "picture_id[]";
+                $(input).attr('data-id', $(this).attr('id'));
+                input.name = "pictures_id[]";
                 input.type = 'hidden';
-                input.value = this.id;
-                $('form').appendChild(input);
+                input.value = $(this).attr('id');
+                $('form').append(input);
             });
         });
 

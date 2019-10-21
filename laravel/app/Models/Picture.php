@@ -10,7 +10,7 @@ class Picture extends Model implements IModelFileManager
 {
     use ModelFileManagerTrait;
 
-    const PICTURE_PATH = '\products';
+    const PICTURE_PATH = 'products';
 
     public function getFolderPath(): string
     {

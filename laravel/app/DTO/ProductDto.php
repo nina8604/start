@@ -34,12 +34,17 @@ class ProductDto
     /**
      * @var int
      */
-    public $category_id;
+    public $categoryId;
 
     /**
      * @var UploadedFile[]|array
      */
     public $gallery;
+
+    /**
+     * @var array
+     */
+    public $picturesIdToDelete;
 
 
     /**
@@ -49,24 +54,27 @@ class ProductDto
      * @param string $slug
      * @param string $description
      * @param int $price
-     * @param int $category_id
+     * @param int $categoryId
      * @param UploadedFile[]|array $gallery
+     * @param array $picturesIdToDelete
      */
     public function __construct(int $sku,
                                 string $name,
                                 string $slug,
                                 string $description,
                                 int $price,
-                                int $category_id,
-                                array $gallery = [])
+                                int $categoryId,
+                                array $gallery = [],
+                                array $picturesIdToDelete = [])
     {
         $this->sku = $sku;
         $this->name = $name;
         $this->slug = $slug;
         $this->description = $description;
         $this->price = $price;
-        $this->category_id = $category_id;
+        $this->categoryId = $categoryId;
         $this->gallery = $gallery;
+        $this->picturesIdToDelete = $picturesIdToDelete;
     }
 
     /**
@@ -74,6 +82,13 @@ class ProductDto
      */
     public function hasNewFiles() : bool {
         return !empty($this->gallery);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasToDeleteFiles() : bool {
+        return !empty($this->picturesIdToDelete);
     }
 
     /**
@@ -86,7 +101,7 @@ class ProductDto
             'slug' => $this->slug,
             'description' => $this->description,
             'price' => $this->price,
-            'category_id' => $this->category_id,
+            'category_id' => $this->categoryId,
         ];
     }
 
@@ -102,7 +117,8 @@ class ProductDto
             Arr::get($attributes, 'description', ''),
             Arr::get($attributes, 'price', ''),
             Arr::get($attributes, 'category_id', ''),
-            Arr::wrap(Arr::get($attributes, 'gallery', []))
+            Arr::wrap(Arr::get($attributes, 'gallery', [])),
+            Arr::get($attributes, 'pictures_id', [])
         );
     }
 }

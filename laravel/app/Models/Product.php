@@ -17,8 +17,6 @@ use Illuminate\Support\Collection;
  */
 class Product extends Model implements IModelFileManager
 {
-//    const PICTURE_PATH = 'products';
-
     use ModelFileManagerTrait;
 
     protected $guarded = ['id'];

@@ -18,8 +18,6 @@ use App\Traits\PictureTrait;
  */
 class Category extends Model implements IModelFileManager
 {
-//    use AssetFilePath;
-//    use PictureTrait;
 
     use ModelFileManagerTrait;
 

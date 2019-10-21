@@ -21,6 +21,10 @@ class ProductService
             $productItemService->addImages($productDto->gallery);
         }
 
+        if($productDto->hasToDeleteFiles()) {
+            $productItemService->deleteImages($productDto->picturesIdToDelete);
+        }
+
         $productItemService
             ->changeAttributes($productDto)
             ->commitChanges();
