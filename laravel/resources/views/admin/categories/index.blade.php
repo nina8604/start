@@ -35,7 +35,7 @@
                             <td><img src="{{ $category->assetToAbsolute($category->file_name) }}" class="card-img-top" alt="..."></td>
                             <td>{{ $category -> name }}</td>
                             <td>{{ $category -> slug }}</td>
-                            <td>{{ $category -> description }}</td>
+                            <td>{{ Str::words($category -> description, 10, '...') }}</td>
                             <td>
                                 <a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}" class="btn" >Edit</a>
                                 <form action="{{ route('admin.categories.destroy', ['category' => $category->id]) }}" method="POST">

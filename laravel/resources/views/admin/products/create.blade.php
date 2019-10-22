@@ -26,20 +26,6 @@
                     @if($product->exists)
                         @method('PUT')
                     @endif
-
-{{--                    @component('admin.includes.fileFormGroup', ['errors' => $errors, 'property' => 'file', 'label' => ''])--}}
-{{--                        <input type="file" name="file" class="form-control-file" id="categoryFile" @if(!isset($category->file_name))  @endif/>--}}
-{{--                    @endcomponent--}}
-
-{{--                    <div class="col-sm-6form-group row">--}}
-{{--                        <div class="col-sm-4">--}}
-{{--                            <div id="showFile" class="card card-body bg-light">--}}
-{{--                                @isset($category->file_name)--}}
-{{--                                    <img src="{{ $category->assetToAbsolute($category->file_name) }}" alt="" class="img-fluid">--}}
-{{--                                @endisset--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     <br>
                     @component('admin.includes.formGroup', ['errors' => $errors, 'property' => 'sku', 'label' => 'Артикул'])
                         <input type="text" class="form-control" name="sku" id="inputSku" value="{{ old('sku') ? old('sku') : $product->sku }}" >
@@ -83,26 +69,31 @@
 
                     <br>
                     <div class="row">
-                        <div id="image-holder" class="col-12 d-flex flex-wrap">
-                            @if($product->id and count($product->pictures))
-                                @foreach($product->pictures as $picture)
-                                    <div  class="col-sm-4">
-                                        <div class="card card-body bg-light">
-                                            <div class="icons-flex" style="display: flex;">
+{{--                        <div id="image-holder" class="col-12 d-flex flex-wrap ">--}}
+                            <ul id="sortable" class="col-12 d-flex flex-wrap ">
+                                @if($product->id and count($product->pictures))
+                                    @foreach($product->pictures->orderBy('ordering', 'asc')->get() as $picture)
+                                        <li class="ui-state-default">
+                                            <div  class="col-sm-4">
+                                                <div class="card card-body bg-light">
+                                                    <div class="icons-flex" style="display: flex;">
                                                 <span class="admin-image-delete" style="margin-right: 10px;">
                                                     <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>
                                                 </span>
-                                                <span class="admin-image-restore">
+                                                        <span class="admin-image-restore">
                                                     <i class="fa fa-window-restore restore-action-photo" aria-hidden="true" data-id="{{ $picture->id }}"></i>
                                                 </span>
 
+                                                    </div>
+                                                    <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid" >
+                                                    <input name="ordering[]" class="ordering-file" type="hidden" value="{{ $picture->ordering }}">
+                                                </div>
                                             </div>
-                                            <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid" >
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+{{--                        </div>--}}
                     </div>
                     <br>
                     <div class="form-group row">
@@ -120,6 +111,7 @@
     <script>
 
         $(document).ready(function() {
+            // Predelete picture
             $('.admin-image-delete i').on("click", function() {
                 let inp = $(`form input[data-id=${ $(this).attr('id') }]`);
                 if ( inp.length >= 1  ) return;
@@ -133,6 +125,7 @@
                 input.value = $(this).attr('id');
                 $('form').append(input);
             });
+            // Restore picture
             $('.admin-image-restore i').on("click", function() {
 
                 $(this).parent().parent().next().attr('style', 'opacity: 1;');
@@ -140,6 +133,7 @@
                 $(`form input[data-id=${ $(this).attr('data-id') }]`).remove();
             })
 
+            // Preview pictures before save to database
             $("#fileUpload").on('change', function () {
 
                 //Get count of selected files
@@ -147,7 +141,7 @@
 
                 let imgPath = $(this)[0].value;
                 let extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-                let image_holder = $("#image-holder");
+                let image_holder = $("#sortable");
 
                 if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                     if (typeof (FileReader) != "undefined") {
@@ -157,12 +151,15 @@
 
                             let reader = new FileReader();
                             reader.onload = function (e) {
+                                let liIndex = $('#sortable li:last-child').index() + 2;
                                 $(image_holder).append([
-                                    '<div class="col-sm-4"><div class="card card-body bg-light"><img src="',
+                                    '<li class="ui-state-default"><div class="col-sm-4"><div class="card card-body bg-light"><img src="',
                                     e.target.result,
-                                    '" class="img-fluid" /></div></div>'].join(''));
+                                    '" class="img-fluid"/><input type="hidden" class="ordering-file" name="ordering[]" value="',
+                                    liIndex,
+                                    '"></div></div></li>'
+                                ].join(''));
                             };
-                            // image_holder.show();
                             reader.readAsDataURL($(this)[0].files[i]);
                         }
 
@@ -173,6 +170,12 @@
                     alert("Пожалуйста, выберите только картинки");
                 }
             });
+
+            // sortable pictures
+            $( function() {
+                $( "#sortable" ).sortable();
+                $( "#sortable" ).disableSelection();
+            } );
 
         });
 

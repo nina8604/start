@@ -67,10 +67,9 @@
 
 @section('scripts')
     <script>
-        function preloadPictures(evt, containerId){
+        function preloadPicture(evt, containerId){
             let file = evt.target.files;
             let pictureFile = file[0];
-
             let reader = new FileReader();
             // Closure to capture the file information.
             reader.onload = (function(theFile) {

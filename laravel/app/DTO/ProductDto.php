@@ -46,6 +46,11 @@ class ProductDto
      */
     public $picturesIdToDelete;
 
+    /**
+     * @var array
+     */
+    public $ordering;
+
 
     /**
      * ProductDto constructor.
@@ -57,6 +62,7 @@ class ProductDto
      * @param int $categoryId
      * @param UploadedFile[]|array $gallery
      * @param array $picturesIdToDelete
+     * @param array $ordering
      */
     public function __construct(int $sku,
                                 string $name,
@@ -65,7 +71,8 @@ class ProductDto
                                 int $price,
                                 int $categoryId,
                                 array $gallery = [],
-                                array $picturesIdToDelete = [])
+                                array $picturesIdToDelete = [],
+                                array $ordering = [])
     {
         $this->sku = $sku;
         $this->name = $name;
@@ -75,6 +82,7 @@ class ProductDto
         $this->categoryId = $categoryId;
         $this->gallery = $gallery;
         $this->picturesIdToDelete = $picturesIdToDelete;
+        $this->ordering = $ordering;
     }
 
     /**
@@ -102,6 +110,7 @@ class ProductDto
             'description' => $this->description,
             'price' => $this->price,
             'category_id' => $this->categoryId,
+            'ordering' => $this->ordering,
         ];
     }
 
@@ -118,7 +127,8 @@ class ProductDto
             Arr::get($attributes, 'price', ''),
             Arr::get($attributes, 'category_id', ''),
             Arr::wrap(Arr::get($attributes, 'gallery', [])),
-            Arr::get($attributes, 'pictures_id', [])
+            Arr::get($attributes, 'pictures_id', []),
+            Arr::get($attributes, 'ordering', [])
         );
     }
 }

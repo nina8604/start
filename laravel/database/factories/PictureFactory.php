@@ -9,5 +9,6 @@ use Faker\Generator as Faker;
 $factory->define(Picture::class, function (Faker $faker) {
     return [
         'product_id' => Product::inRandomOrder()->first()->id,
+        'ordering' => $faker->numberBetween(1, 10),
     ];
 });
