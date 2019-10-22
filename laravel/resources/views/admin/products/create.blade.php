@@ -78,17 +78,16 @@
                     @endcomponent
 
                     @component('admin.includes.formGroup', ['errors' => $errors, 'property' => 'gallery', 'label' => 'Изображения галереи'])
-                    <input class="form-control-file" type="file" name="gallery[]" multiple />
+                    <input id="fileUpload" class="form-control-file" type="file" name="gallery[]" multiple />
                     @endcomponent
 
                     <br>
                     <div class="row">
-                        <div class="col-12 d-flex flex-wrap">
+                        <div id="image-holder" class="col-12 d-flex flex-wrap">
                             @if($product->id and count($product->pictures))
                                 @foreach($product->pictures as $picture)
                                     <div  class="col-sm-4">
-{{--                                        <div class="card card-body bg-light" style="display: block;">--}}
-                                        <div class="card card-body bg-light" style="opacity: 1;">
+                                        <div class="card card-body bg-light">
                                             <div class="icons-flex" style="display: flex;">
                                                 <span class="admin-image-delete" style="margin-right: 10px;">
                                                     <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>
@@ -98,11 +97,7 @@
                                                 </span>
 
                                             </div>
-{{--                                            <span class="admin-image-delete" style="display: inline-block;">--}}
-{{--                                                <i class="fa fa-times-circle-o delete-action-photo" aria-hidden="true" id="{{ $picture->id }}"></i>--}}
-{{--                                            </span>--}}
                                             <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid" >
-{{--                                            <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-thumbnail">--}}
                                         </div>
                                     </div>
                                 @endforeach
@@ -124,41 +119,14 @@
 @section('scripts')
     <script>
 
-        function preloadPicture(evt, containerId){
-            let file = evt.target.files;
-            let pictureFile = file[0];
-
-            let reader = new FileReader();
-            // Closure to capture the file information.
-            reader.onload = (function(theFile) {
-                return function(e) {
-
-                    $('#' + containerId).html(['<img class="thumb" src="', e.target.result,
-                        '" title="', escape(theFile.name), '" />'].join(''));
-                };
-            })(pictureFile);
-            // Read in the image file as a data URL.
-            reader.readAsDataURL(pictureFile);
-        }
-        // $(document).ready(function() {
-        //     $('#categoryFile').on("change", function(evt){
-        //         preloadPicture(evt, 'showFile');
-        //     });
-        // });
-
         $(document).ready(function() {
             $('.admin-image-delete i').on("click", function() {
                 let inp = $(`form input[data-id=${ $(this).attr('id') }]`);
                 if ( inp.length >= 1  ) return;
-                // console.log()
-                // $(this).parent().parent().attr('style', 'display: none;');
-
                 let input = document.createElement('INPUT');
-                // $(this).parent().parent().attr('style', 'opacity: 0.4;');
 
                 $(this).parent().parent().next().attr('style', 'opacity: 0.4;');
                 $(this).attr('style', 'opacity: 0.4;');
-                // $(this).parent().parent().prepend('<span class="admin-image-restore" style="display: inline-block;"><i class="fa fa-window-restore restore-action-photo" aria-hidden="true"></i></span>');
                 $(input).attr('data-id', $(this).attr('id'));
                 input.name = "pictures_id[]";
                 input.type = 'hidden';
@@ -169,9 +137,43 @@
 
                 $(this).parent().parent().next().attr('style', 'opacity: 1;');
                 $('.admin-image-delete i').attr('style', 'opacity: 1;');
-                // console.log($(`form input[data-id=${ $(this).attr('data-id') }]`));
                 $(`form input[data-id=${ $(this).attr('data-id') }]`).remove();
             })
+
+            $("#fileUpload").on('change', function () {
+
+                //Get count of selected files
+                let countFiles = $(this)[0].files.length;
+
+                let imgPath = $(this)[0].value;
+                let extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                let image_holder = $("#image-holder");
+
+                if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                    if (typeof (FileReader) != "undefined") {
+
+                        //loop for each file selected for uploaded.
+                        for (let i = 0; i < countFiles; i++) {
+
+                            let reader = new FileReader();
+                            reader.onload = function (e) {
+                                $(image_holder).append([
+                                    '<div class="col-sm-4"><div class="card card-body bg-light"><img src="',
+                                    e.target.result,
+                                    '" class="img-fluid" /></div></div>'].join(''));
+                            };
+                            // image_holder.show();
+                            reader.readAsDataURL($(this)[0].files[i]);
+                        }
+
+                    } else {
+                        alert("Этот браузер не поддерживает FileReader.");
+                    }
+                } else {
+                    alert("Пожалуйста, выберите только картинки");
+                }
+            });
+
         });
 
     </script>
