@@ -18,7 +18,7 @@ class ProductService
         $productItemService = new ProductItemService($product);
 
         if($productDto->hasNewFiles()) {
-            $productItemService->addImages($productDto->gallery);
+            $productItemService->addImages($productDto->gallery, $productDto->ordering);
         }
 
         if($productDto->hasToDeleteFiles()) {

@@ -69,10 +69,11 @@
 
                     <br>
                     <div class="row">
+
 {{--                        <div id="image-holder" class="col-12 d-flex flex-wrap ">--}}
                             <ul id="sortable" class="col-12 d-flex flex-wrap ">
                                 @if($product->id and count($product->pictures))
-                                    @foreach($product->pictures->orderBy('ordering', 'asc')->get() as $picture)
+                                    @foreach($product->pictures()->orderBy('ordering')->get() as $picture)
                                         <li class="ui-state-default">
                                             <div  class="col-sm-4">
                                                 <div class="card card-body bg-light">

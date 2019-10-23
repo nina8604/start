@@ -46,15 +46,17 @@ class ProductItemService
 
     /**
      * @param UploadedFile[]|array $gallery
+     * @param array $ordering
      * @return void
      * @throws \Exception
      */
-    public function addImages(array $gallery) {
-        $this->recordPromiseAction(function() use($gallery) {
-            foreach($gallery as $uploadedImage) {
+    public function addImages(array $gallery, array $ordering) {
+        $this->recordPromiseAction(function() use($gallery, $ordering) {
+            foreach($gallery as $orderNumber => $uploadedImage) {
                 $newPicture = new Picture();
                 $pictureService = new PictureService($uploadedImage);
                 $newPicture->path = $pictureService->storeToFolder($newPicture->getFolderPath());
+                $newPicture->ordering = $ordering[$orderNumber];
 
                 // $newPicture->product_id = $this->product->id;
                 // $newPicture->save();

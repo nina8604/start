@@ -110,7 +110,6 @@ class ProductDto
             'description' => $this->description,
             'price' => $this->price,
             'category_id' => $this->categoryId,
-            'ordering' => $this->ordering,
         ];
     }
 
