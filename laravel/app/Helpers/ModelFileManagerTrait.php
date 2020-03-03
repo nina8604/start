@@ -17,7 +17,7 @@ trait ModelFileManagerTrait
         /* @var IModelFileManager|Model $this */
         $folderPath = $this->getFolderPath();
         $fileName = $this->getFileName();
-        $filePath = "/{$folderPath}/{$fileName}";
+        $filePath =  -dd;
         if (Storage::disk('public')->exists($filePath)) {
             return Storage::disk('public')->delete($filePath);
         }

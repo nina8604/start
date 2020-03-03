@@ -15,7 +15,8 @@ use Illuminate\Http\UploadedFile;
 use App\Http\Requests\CategoryRequest;
 use App\Services\PictureService;
 
-class CategoryController extends Controller
+class
+CategoryController extends Controller
 {
     /**
      * @var CategoryService

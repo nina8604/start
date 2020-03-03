@@ -18,6 +18,7 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('/products', 'ProductsController');
 Route::resource('/categories', 'CategoryController')->only(['index', 'show']);
+Route::get('/vue', 'VueController@index')->name('vue');
 
 
 Auth::routes();

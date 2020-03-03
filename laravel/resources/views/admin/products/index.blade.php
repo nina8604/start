@@ -22,7 +22,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Picture</th>
                         <th scope="col">SKU</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">Name</th>slug
                         <th scope="col">Slug</th>
                         <th scope="col">Description</th>
                         <th scope="col">Category</th>
@@ -36,7 +36,9 @@
                         <tr>
                             <th scope="row">{{ $loop -> index + 1 }}</th>
                             <td>
-{{--                                <img src="{{ $product->assetToAbsolute($product->file_name) }}" class="card-img-top" alt="...">--}}
+                                @if($product->picture['path'] !== null)
+                                    <img src="{{ $product->assetToAbsolute($product->picture['path']) }}" class="card-img-top" alt="...">
+                                @endif
                             </td>
                             <td>{{ $product -> sku }}</td>
                             <td>{{ $product -> name }}</td>

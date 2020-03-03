@@ -23,7 +23,7 @@
                     <div class="row no-gutters">
                         <div class="col-md-4">
                             @if($product->picture)
-                                <img src="{{ $product->picture->thumbnail }}" class="card-img" alt="...">
+                                <img src="{{ $picture->assetToAbsolute($picture->path) }}" class="card-img" alt="...">
                             @endif
                         </div>
                         <div class="col-md-8">

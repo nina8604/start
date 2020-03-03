@@ -86,7 +86,9 @@
                                                 </span>
 
                                                     </div>
-                                                    <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid" >
+                                                    @if($picture->path !== null)
+                                                        <img src="{{ $picture->assetToAbsolute($picture->path) }}" alt="" class="img-fluid" >
+                                                    @endif
                                                     <input name="ordering[]" class="ordering-file" type="hidden" value="{{ $picture->ordering }}">
                                                 </div>
                                             </div>

@@ -19235,6 +19235,8 @@ module.exports = function(module) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./vue */ "./resources/js/vue.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -19275,6 +19277,48 @@ $dropDownToggle.on('click', function () {
   isOpen = !isOpen;
 });
 
+function preloadPicture(evt, containerId) {
+  var file = evt.target.files;
+  var pictureFile = file[0];
+  var reader = new FileReader(); // Closure to capture the file information.
+
+  reader.onload = function (theFile) {
+    return function (e) {
+      $('#' + containerId).find('img').remove();
+      $('#' + containerId).html(['<img class="thumb" src="', e.target.result, '" title="', escape(theFile.name), '" />'].join(''));
+    };
+  }(pictureFile); // Read in the image file as a data URL.
+
+
+  reader.readAsDataURL(pictureFile);
+}
+
+/***/ }),
+
+/***/ "./resources/js/vue.js":
+/*!*****************************!*\
+  !*** ./resources/js/vue.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var app1 = new Vue({
+  el: '#app1',
+  data: function data() {
+    return {
+      product: 'Nina'
+    };
+  },
+  created: function created() {// debugger;
+  },
+  methods: {
+    changeProduct: function changeProduct() {
+      // debugger;
+      this.product = 'vova';
+    }
+  }
+});
+
 /***/ }),
 
 /***/ "./resources/sass/app.scss":
@@ -19295,8 +19339,8 @@ $dropDownToggle.on('click', function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/developer/nina/start/laravel/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/developer/nina/start/laravel/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/developer/nina/starting/laravel/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/developer/nina/starting/laravel/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
